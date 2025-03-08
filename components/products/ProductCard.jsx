@@ -1,10 +1,15 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 
 const ProductCard = ({ product }) => {
+     const router = useRouter();
   return (
-    <View style={styles.card}>
+    <TouchableOpacity
+      onPress={() => router.push(`/product/${product.id}`)}
+      style={styles.card}
+    >
       {/* Product Image */}
       <Image source={{ uri: product.image }} style={styles.image} />
 
@@ -24,7 +29,7 @@ const ProductCard = ({ product }) => {
           <Text style={styles.buttonText}>Add to Cart</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

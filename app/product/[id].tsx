@@ -1,9 +1,16 @@
 import React from "react";
-import { FlatList, View } from "react-native";
-import ProductCard from "./ProductCard";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  SafeAreaView,
+} from "react-native";
+import { useLocalSearchParams, useNavigation } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
-const ProductRow = () => {
-  // Array of 5 products with descriptions
 const products = [
   {
     id: "1",
@@ -57,19 +64,145 @@ const products = [
   },
 ];
 
+const ProductDetails = () => {
+  const { id } = useLocalSearchParams(); // Get product ID from URL
+  const product = products.find((p) => p.id === id);
+  const navigation = useNavigation();
+
+  if (!product) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.errorText}>Product not found</Text>
+      </View>
+    );
+  }
 
   return (
-    <View>
-      <FlatList
-        data={products}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <ProductCard product={item} />}
-        horizontal
-        contentContainerStyle={{ columnGap: 10, paddingHorizontal: 10 }}
-        showsHorizontalScrollIndicator={false}
-      />
-    </View>
+    <>
+      <SafeAreaView style={styles.detailsHeader}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="chevron-back-circle" size={32} color={"#224241"} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {}}>
+          <Ionicons name="heart" size={32} color={"red"} />
+        </TouchableOpacity>
+      </SafeAreaView>
+      <ScrollView style={styles.container}>
+        {/* Product Image */}
+        <Image source={{ uri: product.image }} style={styles.image} />
+
+        {/* Product Info */}
+        <View style={styles.detailsContainer}>
+          <Text style={styles.title}>{product.title}</Text>
+          <Text style={styles.supplier}>By {product.supplier}</Text>
+          <View style={styles.rating}>
+            <Text style={styles.price}>${product.price.toFixed(2)}</Text>
+            <View style={styles.ratingStar}>
+              {[1, 2, 3, 4, 5].map((index) => (
+                <Ionicons key={index} name="star" size={12} color={"gold"} />
+              ))}
+              <Text style={styles.ratingText}>4.8</Text>
+            </View>
+          </View>
+          <Text style={styles.description}>Description</Text>
+          <Text style={styles.descriptionText}>{product.description}</Text>
+
+          {/* Add to Cart Button */}
+          <TouchableOpacity style={styles.button}>
+            <Ionicons name="cart-outline" size={20} color="white" />
+            <Text style={styles.buttonText}>Add to Cart</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </>
   );
 };
 
-export default ProductRow;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  detailsHeader: {
+    position: "absolute",
+    top: 20,
+    left: 0,
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 15,
+    zIndex: 1,
+  },
+  image: {
+    width: "100%",
+    height: 300,
+    resizeMode: "cover",
+  },
+  detailsContainer: {
+    padding: 20,
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  supplier: {
+    fontSize: 16,
+    color: "#666",
+    marginVertical: 5,
+  },
+  price: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#228B22",
+    marginVertical: 8,
+  },
+  description: {
+    fontSize: 18,
+    color: "#224241",
+    fontWeight: "bold",
+    marginTop: 10,
+  },
+  descriptionText: {
+    fontSize: 14,
+    color: "#888",
+    marginVertical: 4,
+  },
+  button: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#228B22",
+    paddingVertical: 12,
+    borderRadius: 5,
+    justifyContent: "center",
+    marginTop: 15,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+    marginLeft: 5,
+  },
+  errorText: {
+    fontSize: 18,
+    color: "red",
+    textAlign: "center",
+    marginTop: 50,
+  },
+  rating: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  ratingStar: {
+    flexDirection: "row",
+  },
+  ratingText: {
+    paddingHorizontal: 4,
+    fontSize: 14,
+    color: "#224241",
+    fontWeight: "bold",
+  },
+});
+
+export default ProductDetails;
