@@ -13,6 +13,7 @@ import Welcome from "@/components/home/Welcome";
 import Heading from "@/components/home/Heading";
 import ProductRow from "@/components/products/ProductRow";
 // import Carousel from "@/components/home/Carousel";
+// import Carousel from "@/components/home/Carousel";
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -46,7 +47,7 @@ export default function HomeScreen() {
           style={styles.fullWidthImage}
         />
         <Heading />
-        <ProductRow/>
+        <ProductRow />
       </ScrollView>
     </SafeAreaView>
   );

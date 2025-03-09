@@ -18,7 +18,7 @@ const Carousel = () => {
         dotColor="#FF6347"
         inactiveDotColor="#90A4AE"
         sliderBoxHeight={200}
-        ImageComponentStyle={styles.image} // Explicitly applying styles
+        ImageComponentStyle={{ width: "90%", borderRadius: 10 }}
       />
     </View>
   );
