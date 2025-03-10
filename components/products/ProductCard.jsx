@@ -4,14 +4,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
 const ProductCard = ({ product }) => {
-     const router = useRouter();
+  const router = useRouter();
   return (
     <TouchableOpacity
-      onPress={() => router.push(`/product/${product.id}`)}
+      onPress={() => router.push(`/product/${product._id}`)}
       style={styles.card}
     >
       {/* Product Image */}
-      <Image source={{ uri: product.image }} style={styles.image} />
+      <Image source={{ uri: product.imageUrl }} style={styles.image} />
 
       {/* Product Info */}
       <View style={styles.info}>
@@ -21,7 +21,7 @@ const ProductCard = ({ product }) => {
         <Text style={styles.supplier} numberOfLines={1}>
           {product.supplier}
         </Text>
-        <Text style={styles.price}>${product.price.toFixed(2)}</Text>
+        <Text style={styles.price}>${product.price}</Text>
 
         {/* Add to Cart Button */}
         <TouchableOpacity style={styles.button}>
@@ -36,20 +36,21 @@ const ProductCard = ({ product }) => {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#fff",
-    borderRadius: 10,
-    overflow: "hidden",
+    borderBottomLeftRadius: 10,
+    borderTopRightRadius: 10,
     shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    elevation: 4,
-    width: 180, // Adjust based on your layout
-    margin: 10,
+    shadowOpacity: 0.25,
+    shadowOffset: { width: 2, height: 2 }, // Push shadow to the right and bottom
+    shadowRadius: 6, // Control spread to avoid left/top shadow
+    width: 180,
+    margin: 8,
   },
+
   image: {
     width: "100%",
     height: 120, // Adjust as needed
     resizeMode: "cover",
+    borderTopEndRadius: 10,
   },
   info: {
     padding: 10,
