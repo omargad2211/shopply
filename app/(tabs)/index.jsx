@@ -11,7 +11,8 @@ import { useNavigation, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import Welcome from "@/components/home/Welcome";
 import Heading from "@/components/home/Heading";
-import ProductRow from "@/components/products/ProductRow";
+import NewArrival from "@/components/products/NewArrival";
+import BudgetPick from "@/components/products/BudgetPick";
 // import Carousel from "@/components/home/Carousel";
 // import Carousel from "@/components/home/Carousel";
 
@@ -37,23 +38,27 @@ export default function HomeScreen() {
           </View>
         </View>
       </View>
-      <ScrollView>
+      <ScrollView style={styles.container}>
         <Welcome />
         {/* <Carousel /> */}
         <Image
-          source={{
-            uri: "https://images.furnituredealer.net/img/products/signature_design_by_ashley/color/jayceon_6490266%2B34%2B17-b1.jpg",
-          }}
+          source={require("@/assets/images/home.jpg")}
           style={styles.fullWidthImage}
         />
-        <Heading />
-        <ProductRow />
+
+        <Heading title={"New Arrivals"} />
+        <NewArrival />
+        <Heading title={"Budget Picks"} />
+        <BudgetPick />
       </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: 35,
+  },
   appBarWrapper: {
     marginTop: 10,
   },
@@ -77,7 +82,7 @@ const styles = StyleSheet.create({
     right: -8,
     height: 18,
     width: 18,
-    backgroundColor: "green",
+    backgroundColor: "#A8866B",
     borderRadius: 9,
     justifyContent: "center",
     alignItems: "center",

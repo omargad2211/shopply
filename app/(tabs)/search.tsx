@@ -18,7 +18,7 @@ export default function Search() {
       <View style={styles.wrapper}>
         <View style={styles.searchArea}>
           <View style={styles.searchContainer}>
-            <Ionicons name="search-outline" size={24} color="#888" />
+            {/* <Ionicons name="search-outline" size={24} color="#888" /> */}
             <TextInput
               style={styles.searchInput}
               placeholder="What are you looking for?"
@@ -28,7 +28,7 @@ export default function Search() {
           </View>
           <View>
             <TouchableOpacity style={styles.camera}>
-              <Ionicons name="camera-outline" size={24} color="white" />
+              <Ionicons name="search-outline" size={24} color="white" />
             </TouchableOpacity>
           </View>
         </View>
@@ -76,14 +76,16 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     color: "#333",
     borderWidth: 0,
+    paddingRight:40,
+    paddingLeft:20
   },
   camera: {
     backgroundColor: "#224241",
     paddingHorizontal: 15,
-    paddingVertical: 12,
+    paddingVertical: 10,
     borderRadius: 8,
     position: "absolute",
-    bottom: -24,
-    left: -42,
+    bottom: -21,
+    left: -45,
   },
 });
