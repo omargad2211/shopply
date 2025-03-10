@@ -10,6 +10,8 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "react-native-reanimated";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Provider } from "react-redux";
+import { store } from "../redux/store";
 
 // import { useColorScheme } from '@/hooks/useColorScheme';
 
@@ -34,14 +36,16 @@ export default function RootLayout() {
 
   return (
     <>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="+not-found" />
-          <Stack.Screen name="product/[id]" />
-        </Stack>
-      </GestureHandlerRootView>
-      <StatusBar style="auto" />
+      <Provider store={store}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="+not-found" />
+            <Stack.Screen name="product/[id]" />
+          </Stack>
+        </GestureHandlerRootView>
+        <StatusBar style="auto" />
+      </Provider>
     </>
   );
 }
