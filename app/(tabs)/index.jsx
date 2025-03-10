@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
   },
   appBarWrapper: {
     marginTop: 10,
+    paddingBottom:10
   },
   appBar: {
     flexDirection: "row",
