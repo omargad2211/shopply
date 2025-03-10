@@ -3,6 +3,10 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
+
+
+
+
 const ProductCard = ({ product }) => {
   const router = useRouter();
   return (

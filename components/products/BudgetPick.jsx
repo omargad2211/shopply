@@ -1,15 +1,34 @@
 import React from "react";
-import { FlatList, View, ActivityIndicator, Text } from "react-native";
+import {
+  FlatList,
+  View,
+  ActivityIndicator,
+  Text,
+  Platform,
+} from "react-native";
 import ProductCard from "./ProductCard";
 import { useGetAllProductsQuery } from "@/redux/productsApi";
 
-const ProductRow = () => {
+const BudgetPick = () => {
   const { data: products, error, isLoading } = useGetAllProductsQuery();
-  // console.log(products);
+//   console.log(products);
+
+  const budgetProducts = products
+    ?.slice()
+    .sort((a, b) => new Date(Number(a.price)) - new Date(Number(b.price)))
+    .slice(0, 7);
+//   console.log(budgetProducts);
 
   // Handle loading state
   if (isLoading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator
+          size="small"
+          color={Platform.OS === "ios" ? "#999" : "#0000ff"}
+        />
+      </View>
+    );
   }
 
   // Handle error state
@@ -25,7 +44,7 @@ const ProductRow = () => {
   return (
     <View>
       <FlatList
-        data={products}
+        data={budgetProducts}
         keyExtractor={(item) => item.id?.toString() || Math.random().toString()}
         renderItem={({ item }) => <ProductCard product={item} />}
         horizontal
@@ -36,4 +55,4 @@ const ProductRow = () => {
   );
 };
 
-export default ProductRow;
+export default BudgetPick;
