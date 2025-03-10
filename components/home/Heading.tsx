@@ -2,11 +2,11 @@ import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-const Heading = () => {
+const Heading = ({ title }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>New Arrivals</Text>
+        <Text style={styles.title}>{title}</Text>
         <TouchableOpacity style={styles.iconButton}>
           <Ionicons name="grid" size={24} color={"#224241"} />
         </TouchableOpacity>
