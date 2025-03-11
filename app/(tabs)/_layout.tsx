@@ -31,12 +31,12 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name="cart"
+        name="wishlist"
         options={{
-          title: "Cart",
+          title: "wishlist",
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome6 name="opencart" size={size} color={color} />
+            <Ionicons name="heart-outline" size={size} color={color} />
           ),
         }}
       />
