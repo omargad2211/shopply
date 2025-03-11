@@ -7,17 +7,48 @@ import {
   ScrollView,
   Image,
 } from "react-native";
-import { useNavigation, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import Welcome from "@/components/home/Welcome";
 import Heading from "@/components/home/Heading";
 import NewArrival from "@/components/products/NewArrival";
 import BudgetPick from "@/components/products/BudgetPick";
-// import Carousel from "@/components/home/Carousel";
-// import Carousel from "@/components/home/Carousel";
+import { useDispatch } from "react-redux";
+import { loadWishlist } from "@/redux/wishlistSlice";
+import { useEffect, useState } from "react";
+import * as Location from "expo-location";
 
 export default function HomeScreen() {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  useEffect(() => {
+    dispatch(loadWishlist());
+    getLocation();
+  }, []);
+
+  const getLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      setErrorMsg("Permission to access location was denied");
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    let address = await Location.reverseGeocodeAsync({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+    });
+
+    if (address.length > 0) {
+      const { city, region } = address[0];
+      setLocation(`${city}, ${region}`);
+    } else {
+      setLocation("Unknown location");
+    }
+  };
 
   return (
     <SafeAreaView>
@@ -25,7 +56,9 @@ export default function HomeScreen() {
         <View style={styles.appBar}>
           {/* Location */}
           <Ionicons name="location-outline" size={24} />
-          <Text style={styles.locationText}>Mit Ghamer, Mansoura</Text>
+          <Text style={styles.locationText}>
+            {location || errorMsg || "Loading location..."}
+          </Text>
 
           {/* Cart Icon with Badge */}
           <View style={styles.cartContainer}>
@@ -38,14 +71,13 @@ export default function HomeScreen() {
           </View>
         </View>
       </View>
+
       <ScrollView style={styles.container}>
         <Welcome />
-        {/* <Carousel /> */}
         <Image
           source={require("@/assets/images/home.jpg")}
           style={styles.fullWidthImage}
         />
-
         <Heading title={"New Arrivals"} />
         <NewArrival />
         <Heading title={"Budget Picks"} />
@@ -61,7 +93,7 @@ const styles = StyleSheet.create({
   },
   appBarWrapper: {
     marginTop: 10,
-    paddingBottom:10
+    paddingBottom: 10,
   },
   appBar: {
     flexDirection: "row",
@@ -95,7 +127,7 @@ const styles = StyleSheet.create({
   },
   fullWidthImage: {
     width: "100%",
-    height: 200, // Adjust as needed
+    height: 200,
     resizeMode: "cover",
     borderRadius: 12,
   },
