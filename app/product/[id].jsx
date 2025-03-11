@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -13,26 +13,47 @@ import {
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useGetProductByIdQuery } from "@/redux/productsApi";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addToWishlist,
+  loadWishlist,
+  removeFromWishlist,
+} from "@/redux/wishlistSlice";
 
 const ProductDetails = () => {
   const { id } = useLocalSearchParams();
   const navigation = useNavigation();
   const { data: product, error, isLoading } = useGetProductByIdQuery(id);
   // console.log(product);
+  const dispatch = useDispatch();
 
-    if (isLoading) {
-      return (
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <ActivityIndicator
-            size="small"
-            color={Platform.OS === "ios" ? "#999" : "#0000ff"}
-          />
-        </View>
-      );
+  useEffect(() => {
+    dispatch(loadWishlist());
+  }, []);
+
+  const wishlist = useSelector((state) => state.wishlist.items);
+  const isSelected = wishlist?.some((item) => item._id === id);
+  // console.log(isSelected);
+
+  const handleToggleWishlist = () => {
+    if (isSelected) {
+      dispatch(removeFromWishlist({ id }));
+    } else {
+      dispatch(addToWishlist(product));
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator
+          size="small"
+          color={Platform.OS === "ios" ? "#999" : "#0000ff"}
+        />
+      </View>
+    );
   }
-  
+
   if (!product) {
     return (
       <View style={styles.container}>
@@ -47,8 +68,12 @@ const ProductDetails = () => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="chevron-back-circle" size={32} color={"#224241"} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => {}}>
-          <Ionicons name="heart" size={32} color={"red"} />
+        <TouchableOpacity onPress={handleToggleWishlist}>
+          <Ionicons
+            name={isSelected ? "heart" : "heart-outline"}
+            size={32}
+            color={"red"}
+          />
         </TouchableOpacity>
       </SafeAreaView>
       <ScrollView style={styles.container}>
