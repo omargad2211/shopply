@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   },
   imageWrapper: {
     alignItems: "center",
-    justifyContent:"center",
+    justifyContent: "center",
     marginTop: 160, // Adjust this if you need the image higher or lower
   },
   backgroundImage: {
@@ -128,6 +128,6 @@ const styles = StyleSheet.create({
     left: -45,
   },
   flatList: {
-    marginBottom: 100,
+    // marginBottom:50,
   },
 });
